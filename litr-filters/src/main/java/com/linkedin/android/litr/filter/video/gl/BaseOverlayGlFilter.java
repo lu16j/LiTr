@@ -137,12 +137,14 @@ abstract class BaseOverlayGlFilter implements GlFilter {
         GlRenderUtils.checkGlError("glBindTexture overlayTextureID");
 
         // Set default texture filtering parameters
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
         GlRenderUtils.checkGlError("glTexParameter");
 
         // Load the bitmap and copy it over into the texture
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, overlayBitmap, 0);
+        // Create mipmap to optimize quality and reduce aliasing
+        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
         return overlayTextureID;
     }
